@@ -8,6 +8,7 @@ export var randomize_position := true
 
 enum Type {
     HORSE,
+    COW,
     MIMICK,
     DEVIL,
     MUMMY
@@ -32,8 +33,11 @@ func _ready():
 
         if not mummy:
             match randi() % 10:
-                0, 1, 2, 3, 4, 5, 6:
+                0, 1, 2, 3, 4:
                     type = Type.HORSE
+                5, 6:
+                    type = Type.COW
+                    $Icon.animation = 'cow'
                 7, 8:
                     type = Type.MIMICK
                 9:
