@@ -16,6 +16,12 @@ func _ready():
     self.score = 0
 
 func _process(delta: float):
+    if not $MusicTimer.is_stopped():
+        $MusicPlayer.volume_db = (
+            lerp(-5.0, 0.0, $MusicTimer.time_left / $MusicTimer.wait_time))
+        $MusicPlayer.pitch_scale = (
+            lerp(0.75, 1.0, $MusicTimer.time_left / $MusicTimer.wait_time))
+
     $TextureRect.rect_position.x -= delta * GROUND_SPEED
 
     if -$TextureRect.rect_position.x > TILE_SIZE:
@@ -44,6 +50,7 @@ func game_over():
     $ScoreTimer.stop()
     $CanvasLayer/CenterContainer.visible = true
     $FocusControl.grab_focus()
+    $MusicTimer.start()
 
     var file := File.new()
 

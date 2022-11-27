@@ -70,7 +70,6 @@ position = Vector2( 0, -48 )
 scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
 animation = "horse"
-frame = 2
 playing = true
 
 [connection signal="timeout" from="RemoveTimer" to="." method="_on_MimickTimer_timeout"]

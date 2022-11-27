@@ -39,6 +39,9 @@ autostart = true
 [node name="ScoreTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="MusicTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_top = 540.0
 margin_right = 496.0
