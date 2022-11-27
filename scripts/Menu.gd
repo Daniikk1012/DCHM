@@ -3,6 +3,7 @@ extends Node2D
 export var game_scene: PackedScene
 
 func _ready():
+    MenuMusicPlayer.play()
     VisualServer.set_default_clear_color(Color.gray)
     $FocusControl.grab_focus()
 
@@ -20,7 +21,9 @@ func _ready():
             print('Error: unexpected error opening the save file in read mode')
 
 func _on_StartButton_pressed():
-    if get_tree().change_scene_to(game_scene) != OK:
+    if get_tree().change_scene_to(game_scene) == OK:
+        MenuMusicPlayer.stop()
+    else:
         print('Error: could not switch to the game scene')
         get_tree().quit(1)
 

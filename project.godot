@@ -42,6 +42,10 @@ config/name="Don't Change Horses in Midstream"
 run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://assets/icon.png"
 
+[autoload]
+
+MenuMusicPlayer="*res://scenes/MenuMusicPlayer.tscn"
+
 [display]
 
 window/size/width=1920
