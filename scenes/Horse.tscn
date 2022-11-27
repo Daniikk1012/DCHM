@@ -47,7 +47,7 @@ animations = [ {
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 12 ), ExtResource( 15 ), ExtResource( 19 ), ExtResource( 20 ) ],
-"loop": true,
+"loop": false,
 "name": "sand",
 "speed": 3.0
 } ]
