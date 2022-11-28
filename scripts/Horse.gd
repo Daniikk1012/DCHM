@@ -11,7 +11,8 @@ enum Type {
     COW,
     MIMICK,
     DEVIL,
-    MUMMY
+    MUMMY,
+    TRUCK,
 }
 
 var mummy := false
@@ -35,14 +36,17 @@ func _ready():
             match randi() % 10:
                 0, 1, 2, 3, 4:
                     type = Type.HORSE
-                5, 6:
+                5:
                     type = Type.COW
                     $Icon.animation = 'cow'
-                7, 8:
+                6, 7:
                     type = Type.MIMICK
-                9:
+                8:
                     type = Type.DEVIL
                     $Icon.animation = 'devil'
+                9:
+                    type = Type.TRUCK
+                    $Icon.animation = 'truck'
         else:
             type = Type.MUMMY
             $Icon.animation = 'mummy'
@@ -53,6 +57,8 @@ func _ready():
 func _process(_delta: float):
     if not $RemoveTimer.is_stopped():
         modulate.a = $RemoveTimer.time_left / $RemoveTimer.wait_time
+    if $Icon.animation == 'none' and not $Particles2D.emitting:
+        queue_free()
 
 func _physics_process(delta: float):
     position.x -= delta * speed
@@ -73,6 +79,8 @@ func touch():
                 get_parent().score += 50
             Type.MUMMY:
                 $Icon.animation = 'sand'
+            Type.TRUCK:
+                $Icon.animation = 'tick'
 
 func _on_Icon_animation_finished():
     if $Icon.animation == 'mimick' or $Icon.animation == 'sand':
@@ -81,6 +89,18 @@ func _on_Icon_animation_finished():
                 if body.has_method('die'):
                     body.die()
         $RemoveTimer.start()
+    elif $Icon.animation == 'tick':
+        for area in get_overlapping_areas():
+            if area.get_class() == get_class():
+                area.queue_free()
+
+        for body in get_overlapping_areas():
+            if body.has_method('die'):
+                body.die()
+
+        $Particles2D.emitting = true
+        $Shadow.visible = false
+        $Icon.visible = false
 
 func _on_MimickTimer_timeout():
     queue_free()

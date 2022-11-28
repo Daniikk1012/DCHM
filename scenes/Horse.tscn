@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://assets/shadow.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Horse.gd" type="Script" id=2]
@@ -24,6 +24,10 @@
 [ext_resource path="res://assets/cow_1.png" type="Texture" id=22]
 [ext_resource path="res://assets/cow_2.png" type="Texture" id=23]
 [ext_resource path="res://assets/cow_0.png" type="Texture" id=24]
+[ext_resource path="res://assets/truck_0.png" type="Texture" id=25]
+[ext_resource path="res://assets/truck_2.png" type="Texture" id=26]
+[ext_resource path="res://assets/truck_1.png" type="Texture" id=27]
+[ext_resource path="res://assets/truck_3.png" type="Texture" id=28]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -58,7 +62,40 @@ animations = [ {
 "loop": false,
 "name": "sand",
 "speed": 3.0
+}, {
+"frames": [ ExtResource( 25 ), null, ExtResource( 26 ), null, ExtResource( 25 ), null, ExtResource( 26 ), null ],
+"loop": false,
+"name": "tick",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 25 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 28 ) ],
+"loop": true,
+"name": "truck",
+"speed": 5.0
 } ]
+
+[sub_resource type="Gradient" id=3]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.664516, 1 )
+colors = PoolColorArray( 0.90625, 0.653916, 0.172187, 1, 0.827451, 0.384314, 0.227451, 1, 0.827451, 0.384314, 0.227451, 0 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 2
+emission_box_extents = Vector3( 32, 32, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 141.39
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 200.99
+initial_velocity_random = 0.65
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 100.0
+scale = 12.0
+color_ramp = SubResource( 4 )
 
 [node name="Horse" type="Area2D"]
 script = ExtResource( 2 )
@@ -78,8 +115,16 @@ position = Vector2( 0, -48 )
 scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
 animation = "horse"
-frame = 1
 playing = true
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 0, -32 )
+emitting = false
+amount = 200
+one_shot = true
+explosiveness = 1.0
+randomness = 0.3
+process_material = SubResource( 5 )
 
 [connection signal="timeout" from="RemoveTimer" to="." method="_on_MimickTimer_timeout"]
 [connection signal="animation_finished" from="Icon" to="." method="_on_Icon_animation_finished"]
