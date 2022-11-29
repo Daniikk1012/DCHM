@@ -50,19 +50,6 @@ func game_over():
     if Shared.score < score:
         Shared.score = score
 
-    var file := File.new()
-
-    if file.open('user://save', File.READ_WRITE) == OK:
-        var high_score := file.get_64()
-        file.seek(0)
-
-        if score > high_score:
-            file.store_64(score)
-
-        file.close()
-    else:
-        push_error('Error: could not open save file in write mode')
-
 func _on_RestartButton_pressed():
     if get_tree().reload_current_scene() != OK:
         push_error('Error: could not restart the game scene')

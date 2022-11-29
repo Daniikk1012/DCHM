@@ -97,6 +97,5 @@ size_flags_vertical = 4
 theme = ExtResource( 1 )
 text = "Back"
 
-[connection signal="drag_ended" from="CenterContainer/VBoxContainer/MusicContainer/MusicSlider" to="." method="_on_MusicSlider_drag_ended"]
 [connection signal="value_changed" from="CenterContainer/VBoxContainer/MusicContainer/MusicSlider" to="." method="_on_MusicSlider_value_changed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
