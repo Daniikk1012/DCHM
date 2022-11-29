@@ -23,17 +23,11 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://scripts/Player.gd"
-}, {
-"base": "Reference",
-"class": "Shared",
-"language": "GDScript",
-"path": "res://scripts/Shared.gd"
 } ]
 _global_script_class_icons={
 "Game": "",
 "Horse": "",
-"Player": "",
-"Shared": ""
+"Player": ""
 }
 
 [application]
@@ -44,7 +38,8 @@ config/icon="res://assets/icon.png"
 
 [autoload]
 
-MenuMusicPlayer="*res://scenes/MenuMusicPlayer.tscn"
+AudioPlayers="*res://scenes/AudioPlayers.tscn"
+Shared="*res://scenes/Shared.tscn"
 
 [display]
 

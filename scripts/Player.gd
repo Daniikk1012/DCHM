@@ -8,7 +8,7 @@ const SPEED_Y := 512.0
 const THRESHOLD := 0.5
 const JUMP_IMPULSE := 512.0
 const GRAVITY := 1024.0
-const HORSE_HEIGHT := 64.0
+const HORSE_HEIGHT := 48.0
 
 var vertical_position := 0.0
 var vertical_speed := 0.0
@@ -37,7 +37,7 @@ func _physics_process(delta: float):
                 if horse is Horse:
                     if horse.overlaps_body(self):
                         found = horse
-                        found.touch()
+                        found.touch(self)
 
         var direction = Vector2(
             (Input.get_action_strength('right')
@@ -71,6 +71,20 @@ func _physics_process(delta: float):
         $IconContainer/Icon.z_index = Shared.SCREEN_SIZE.y
     else:
         $IconContainer/Icon.z_index = position.y
+
+func fire():
+    if $FireTimer.is_stopped():
+        $FireTimer.start()
+
+    $ExtinguishTimer.start()
+    $IconContainer/Icon/FireParticles.emitting = true
+
+func _on_FireTimer_timeout():
+    die()
+
+func _on_ExtinguishTimer_timeout():
+    $FireTimer.stop()
+    $IconContainer/Icon/FireParticles.emitting = false
 
 func die():
     vertical_speed = 0.0

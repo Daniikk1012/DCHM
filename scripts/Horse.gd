@@ -13,6 +13,8 @@ enum Type {
     DEVIL,
     MUMMY,
     TRUCK,
+    BREAD,
+    FIRE,
 }
 
 var mummy := false
@@ -33,20 +35,27 @@ func _ready():
         speed = rand_range(64.0, 192.0)
 
         if not mummy:
-            match randi() % 10:
-                0, 1, 2, 3, 4:
+            match randi() % 20:
+                0, 1, 2, 3, 4, 5, 6, 7:
                     type = Type.HORSE
-                5:
+                8, 9, 10:
                     type = Type.COW
                     $Icon.animation = 'cow'
-                6, 7:
+                11, 12:
                     type = Type.MIMICK
-                8:
+                13, 14:
                     type = Type.DEVIL
                     $Icon.animation = 'devil'
-                9:
+                15, 16:
                     type = Type.TRUCK
                     $Icon.animation = 'truck'
+                17:
+                    type = Type.BREAD
+                    $Icon.animation = 'bread'
+                18, 19:
+                    type = Type.FIRE
+                    $Icon.animation = 'fire'
+                    $FireParticles.emitting = true
         else:
             type = Type.MUMMY
             $Icon.animation = 'mummy'
@@ -57,17 +66,19 @@ func _ready():
 func _process(_delta: float):
     if not $RemoveTimer.is_stopped():
         modulate.a = $RemoveTimer.time_left / $RemoveTimer.wait_time
-    if $Icon.animation == 'none' and not $Particles2D.emitting:
+
+    if not $Icon.visible and not $ExplosionParticles.emitting:
         queue_free()
 
 func _physics_process(delta: float):
     position.x -= delta * speed
     $Icon.z_index = position.y
+    $FireParticles.z_index = $Icon.z_index
 
     if position.x + SIZE.x / 2.0 + Shared.PLAYER_SIZE.x < 0.0:
         queue_free()
 
-func touch():
+func touch(player: Node):
     if not touched:
         touched = true
 
@@ -81,6 +92,11 @@ func touch():
                 $Icon.animation = 'sand'
             Type.TRUCK:
                 $Icon.animation = 'tick'
+            Type.BREAD:
+                get_parent().score += 10
+
+    if type == Type.FIRE:
+        player.fire()
 
 func _on_Icon_animation_finished():
     if $Icon.animation == 'mimick' or $Icon.animation == 'sand':
@@ -94,13 +110,16 @@ func _on_Icon_animation_finished():
             if area.get_class() == get_class():
                 area.queue_free()
 
-        for body in get_overlapping_areas():
+        for body in get_overlapping_bodies():
             if body.has_method('die'):
                 body.die()
 
-        $Particles2D.emitting = true
+        $ExplosionParticles.emitting = true
         $Shadow.visible = false
         $Icon.visible = false
 
 func _on_MimickTimer_timeout():
     queue_free()
+
+func overlaps_body(body: Node) -> bool:
+    return $RemoveTimer.is_stopped() and $Icon.visible and .overlaps_body(body)

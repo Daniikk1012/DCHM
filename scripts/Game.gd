@@ -12,16 +12,11 @@ var score: int setget set_score
 var mummies := 0
 
 func _ready():
+    AudioPlayers.play_game()
     VisualServer.set_default_clear_color(Color.skyblue)
     self.score = 0
 
 func _process(delta: float):
-    if not $MusicTimer.is_stopped():
-        $MusicPlayer.volume_db = (
-            lerp(-5.0, 0.0, $MusicTimer.time_left / $MusicTimer.wait_time))
-        $MusicPlayer.pitch_scale = (
-            lerp(0.75, 1.0, $MusicTimer.time_left / $MusicTimer.wait_time))
-
     $TextureRect.rect_position.x -= delta * GROUND_SPEED
 
     if -$TextureRect.rect_position.x > TILE_SIZE:
@@ -47,10 +42,13 @@ func add_mummies():
     mummies += 5
 
 func game_over():
+    AudioPlayers.slow_down()
     $ScoreTimer.stop()
     $CanvasLayer/CenterContainer.visible = true
     $FocusControl.grab_focus()
-    $MusicTimer.start()
+
+    if Shared.score < score:
+        Shared.score = score
 
     var file := File.new()
 
@@ -63,20 +61,20 @@ func game_over():
 
         file.close()
     else:
-        print('Error: could not open save file in write mode')
-
-
+        push_error('Error: could not open save file in write mode')
 
 func _on_RestartButton_pressed():
     if get_tree().reload_current_scene() != OK:
-        print('Error: could not restart the game scene')
+        push_error('Error: could not restart the game scene')
         get_tree().quit(1)
 
 func _on_ExitButton_pressed():
-    if get_tree().change_scene('res://scenes/Menu.tscn') != OK:
-        print('Error: could not switch to the menu scene')
+    if get_tree().change_scene('res://scenes/Menu.tscn') == OK:
+        AudioPlayers.play_menu()
+    else:
+        push_error('Error: could not switch to the menu scene')
         get_tree().quit(1)
 
-func set_score(value):
+func set_score(value: int):
     score = value
     $CanvasLayer/ScoreLabel.text = 'SCORE: ' + str(score)
