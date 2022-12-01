@@ -15,9 +15,10 @@ func _ready():
         score = file.get_64()
         music = file.get_64()
         sound = file.get_64()
-        file.close()
     else:
         push_error('Could not open save file for reading')
+
+    file.close()
 
     AudioServer.set_bus_volume_db(
         AudioServer.get_bus_index('Music'), linear2db(music / 10.0))
@@ -31,9 +32,10 @@ func _on_Shared_tree_exiting():
         file.store_64(score)
         file.store_64(music)
         file.store_64(sound)
-        file.close()
     else:
         push_error('Could not open save file for writing')
+
+    file.close()
 
 func set_music(value: int):
     music = value
