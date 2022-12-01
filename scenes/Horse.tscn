@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=67 format=2]
 
 [ext_resource path="res://assets/shadow.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Horse.gd" type="Script" id=2]
@@ -34,6 +34,30 @@
 [ext_resource path="res://assets/fire_2.png" type="Texture" id=32]
 [ext_resource path="res://assets/fire_0.png" type="Texture" id=33]
 [ext_resource path="res://assets/fire_1.png" type="Texture" id=34]
+[ext_resource path="res://assets/cow.wav" type="AudioStream" id=35]
+[ext_resource path="res://assets/devil.wav" type="AudioStream" id=36]
+[ext_resource path="res://assets/bread.wav" type="AudioStream" id=37]
+[ext_resource path="res://assets/truck.wav" type="AudioStream" id=38]
+[ext_resource path="res://assets/pee_5.png" type="Texture" id=39]
+[ext_resource path="res://assets/pants_2.png" type="Texture" id=40]
+[ext_resource path="res://assets/pee_1.png" type="Texture" id=41]
+[ext_resource path="res://assets/pants_1.png" type="Texture" id=42]
+[ext_resource path="res://assets/pee_3.png" type="Texture" id=43]
+[ext_resource path="res://assets/pants_0.png" type="Texture" id=44]
+[ext_resource path="res://assets/pee_6.png" type="Texture" id=45]
+[ext_resource path="res://assets/pee_4.png" type="Texture" id=46]
+[ext_resource path="res://assets/pee_0.png" type="Texture" id=47]
+[ext_resource path="res://assets/peed_2.png" type="Texture" id=48]
+[ext_resource path="res://assets/peed_1.png" type="Texture" id=49]
+[ext_resource path="res://assets/pee_2.png" type="Texture" id=50]
+[ext_resource path="res://assets/peed_0.png" type="Texture" id=51]
+[ext_resource path="res://assets/pee_7.png" type="Texture" id=52]
+[ext_resource path="res://assets/pee_8.png" type="Texture" id=53]
+[ext_resource path="res://assets/pee_9.png" type="Texture" id=54]
+[ext_resource path="res://assets/pee_10.png" type="Texture" id=55]
+[ext_resource path="res://assets/pee_11.png" type="Texture" id=56]
+[ext_resource path="res://scenes/Pee.tscn" type="PackedScene" id=57]
+[ext_resource path="res://assets/mimick.wav" type="AudioStream" id=58]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -72,6 +96,21 @@ animations = [ {
 "frames": [ ExtResource( 14 ), ExtResource( 21 ), ExtResource( 18 ) ],
 "loop": true,
 "name": "mummy",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 44 ), ExtResource( 42 ), ExtResource( 40 ) ],
+"loop": true,
+"name": "pants",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 47 ), ExtResource( 41 ), ExtResource( 50 ), ExtResource( 43 ), ExtResource( 46 ), ExtResource( 39 ), ExtResource( 45 ), ExtResource( 52 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 55 ), ExtResource( 56 ) ],
+"loop": false,
+"name": "pee",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 51 ), ExtResource( 49 ), ExtResource( 48 ) ],
+"loop": true,
+"name": "peed",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 12 ), ExtResource( 15 ), ExtResource( 19 ), ExtResource( 20 ) ],
@@ -135,6 +174,29 @@ color_ramp = SubResource( 9 )
 
 [node name="Horse" type="Area2D"]
 script = ExtResource( 2 )
+pee_scene = ExtResource( 57 )
+
+[node name="CowSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 35 )
+bus = "Sound"
+
+[node name="MimickSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 58 )
+volume_db = -5.0
+bus = "Sound"
+
+[node name="DevilSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 36 )
+bus = "Sound"
+
+[node name="TruckSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 38 )
+volume_db = -5.0
+bus = "Sound"
+
+[node name="BreadSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 37 )
+bus = "Sound"
 
 [node name="RemoveTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -151,7 +213,7 @@ position = Vector2( 0, -48 )
 scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
 animation = "horse"
-frame = 1
+frame = 2
 playing = true
 
 [node name="ExplosionParticles" type="Particles2D" parent="."]

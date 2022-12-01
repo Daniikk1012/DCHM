@@ -9,8 +9,10 @@ func _ready():
 
 func _on_BackButton_pressed():
     if get_tree().change_scene('res://scenes/Menu.tscn') != OK:
-        push_error('Error: could not switch to menu scene')
-        get_tree().quit(1)
+        assert(false, 'Error: could not switch to menu scene')
 
 func _on_MusicSlider_value_changed(value: float):
     Shared.music = int(value)
+
+func _on_SoundSlider_value_changed(value: float):
+    Shared.sound = int(value)

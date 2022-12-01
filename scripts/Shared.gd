@@ -2,6 +2,7 @@ extends Node
 
 const SCREEN_SIZE := Vector2(1920.0, 1080.0)
 const PLAYER_SIZE := Vector2(64.0, 48.0)
+const GROUND_SPEED := 384.0
 
 var score: int
 var music := 5 setget set_music
@@ -19,7 +20,9 @@ func _ready():
         push_error('Could not open save file for reading')
 
     AudioServer.set_bus_volume_db(
-        AudioServer.get_bus_index('Master'), linear2db(music / 10.0))
+        AudioServer.get_bus_index('Music'), linear2db(music / 10.0))
+    AudioServer.set_bus_volume_db(
+        AudioServer.get_bus_index('Sound'), linear2db(sound / 10.0))
 
 func _on_Shared_tree_exiting():
     var file := File.new()
@@ -35,7 +38,9 @@ func _on_Shared_tree_exiting():
 func set_music(value: int):
     music = value
     AudioServer.set_bus_volume_db(
-        AudioServer.get_bus_index('Master'), linear2db(music / 10.0))
+        AudioServer.get_bus_index('Music'), linear2db(music / 10.0))
 
 func set_sound(value: int):
     sound = value
+    AudioServer.set_bus_volume_db(
+        AudioServer.get_bus_index('Sound'), linear2db(sound / 10.0))

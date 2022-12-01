@@ -59,7 +59,7 @@ func _physics_process(delta: float):
             die()
 
     else:
-        position.x -= Game.GROUND_SPEED * delta
+        position.x -= Shared.GROUND_SPEED * delta
 
         if vertical_position < 0.0:
             vertical_speed = 0.0
@@ -74,6 +74,7 @@ func _physics_process(delta: float):
 
 func fire():
     if $FireTimer.is_stopped():
+        $FireSoundPlayer.play()
         $FireTimer.start()
 
     $ExtinguishTimer.start()

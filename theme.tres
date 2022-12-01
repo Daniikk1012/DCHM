@@ -39,6 +39,7 @@ Button/styles/focus = SubResource( 4 )
 Button/styles/hover = SubResource( 4 )
 Button/styles/normal = SubResource( 5 )
 Button/styles/pressed = SubResource( 4 )
+HBoxContainer/constants/separation = 150
 HSlider/icons/grabber = ExtResource( 4 )
 HSlider/icons/grabber_highlight = ExtResource( 5 )
 HSlider/styles/slider = SubResource( 6 )

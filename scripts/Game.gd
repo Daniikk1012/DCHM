@@ -2,7 +2,6 @@ class_name Game
 
 extends Node2D
 
-const GROUND_SPEED := 384.0
 const TILE_SIZE := 64.0
 
 export var cloud_scene: PackedScene
@@ -17,10 +16,12 @@ func _ready():
     self.score = 0
 
 func _process(delta: float):
-    $TextureRect.rect_position.x -= delta * GROUND_SPEED
+    $TextureRect.rect_position.x -= delta * Shared.GROUND_SPEED
 
     if -$TextureRect.rect_position.x > TILE_SIZE:
         $TextureRect.rect_position.x += TILE_SIZE
+
+    AudioPlayers.play_deal(mummies > 0)
 
 func _on_CloudTimer_timeout():
     $CloudTimer.wait_time = rand_range(3.0, 5.0)

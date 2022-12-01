@@ -4,6 +4,7 @@ extends Area2D
 
 const SIZE := Vector2(128.0, 64.0)
 
+export var pee_scene: PackedScene
 export var randomize_position := true
 
 enum Type {
@@ -15,6 +16,7 @@ enum Type {
     TRUCK,
     BREAD,
     FIRE,
+    PEE,
 }
 
 var mummy := false
@@ -36,26 +38,29 @@ func _ready():
 
         if not mummy:
             match randi() % 20:
-                0, 1, 2, 3, 4, 5, 6, 7:
+                0, 1, 2, 3, 4, 5, 6:
                     type = Type.HORSE
-                8, 9, 10:
+                7, 8, 9:
                     type = Type.COW
                     $Icon.animation = 'cow'
-                11, 12:
+                10, 11:
                     type = Type.MIMICK
-                13, 14:
+                12, 13:
                     type = Type.DEVIL
                     $Icon.animation = 'devil'
-                15, 16:
+                14, 15:
                     type = Type.TRUCK
                     $Icon.animation = 'truck'
-                17:
+                16:
                     type = Type.BREAD
                     $Icon.animation = 'bread'
-                18, 19:
+                17, 18:
                     type = Type.FIRE
                     $Icon.animation = 'fire'
                     $FireParticles.emitting = true
+                19:
+                    type = Type.PEE
+                    $Icon.animation = 'pants'
         else:
             type = Type.MUMMY
             $Icon.animation = 'mummy'
@@ -83,9 +88,12 @@ func touch(player: Node):
         touched = true
 
         match type:
+            Type.COW:
+                $CowSoundPlayer.play()
             Type.MIMICK:
                 $Icon.animation = 'mimick'
             Type.DEVIL:
+                $DevilSoundPlayer.play()
                 get_parent().add_mummies()
                 get_parent().score += 50
             Type.MUMMY:
@@ -93,7 +101,11 @@ func touch(player: Node):
             Type.TRUCK:
                 $Icon.animation = 'tick'
             Type.BREAD:
+                $BreadSoundPlayer.play()
                 get_parent().score += 10
+            Type.PEE:
+                if $Icon.animation == 'pants':
+                    $Icon.animation = 'pee'
 
     if type == Type.FIRE:
         player.fire()
@@ -101,11 +113,16 @@ func touch(player: Node):
 func _on_Icon_animation_finished():
     if $Icon.animation == 'mimick' or $Icon.animation == 'sand':
         if type == Type.MIMICK:
+            $MimickSoundPlayer.play()
+
             for body in get_overlapping_bodies():
                 if body.has_method('die'):
                     body.die()
+
         $RemoveTimer.start()
     elif $Icon.animation == 'tick':
+        $TruckSoundPlayer.play()
+
         for area in get_overlapping_areas():
             if area.get_class() == get_class():
                 area.queue_free()
@@ -117,6 +134,11 @@ func _on_Icon_animation_finished():
         $ExplosionParticles.emitting = true
         $Shadow.visible = false
         $Icon.visible = false
+    elif $Icon.animation == 'pee':
+        $Icon.animation = 'peed'
+        var pee: Node2D = pee_scene.instance()
+        pee.spawner = self
+        get_parent().add_child(pee)
 
 func _on_MimickTimer_timeout():
     queue_free()
